@@ -13,10 +13,8 @@ query_0 = '''
 
 CREATE TABLE book_new(
     book_id char(10) NOT NULL,
-    title VARCHAR(50) NOT NULL ,
-    author_id char(10) NOT NULL,
-    genre_id char(10) NOT NULL,
-    period_id char(3) NOT NULL,
+    book_Name VARCHAR(255) NOT NULL,
+    Author_name VARCHAR(255) NOT NULL,
     CONSTRAINT pk_products_new PRIMARY KEY (book_id)
     );
 '''
@@ -26,7 +24,7 @@ DELETE FROM book_new
 '''
 
 query_2 = '''
-INSERT INTO book_new (book_id, title, author_id, genre_id, period_id) VALUES (%s, %s, %s, %s, %s)
+INSERT INTO book_new (book_id, book_Name, Author_name) VALUES (%s, %s, %s)
 '''
 
 conn = psycopg2.connect(user=username, password=password, dbname=database)
@@ -41,7 +39,7 @@ with conn:
     with open(INPUT_CSV_FILE, 'r') as file:
         reader = csv.DictReader(file)
         for idx, row in enumerate(reader):
-            values = (idx, row['title'], row['author'], row['genre'], row['period'])
+            values = (idx, row['book_Name'], row['Author_name'])
             cur.execute(query_2, values)
 
     conn.commit()
